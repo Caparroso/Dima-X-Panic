@@ -1,0 +1,40 @@
+/* Movimiento del cielo. Las medidas siguen el ancho del cartel. */
+.poster { overflow: hidden; }
+.lineup { z-index: 2; }
+.lineup p {
+  --lift: -.35cqw;
+  --sway: .44cqw;
+  animation: hover-type 8.4s ease-in-out -2s infinite alternate;
+}
+.lineup p:nth-child(2) { --sway: -.36cqw; animation-duration: 7.6s; animation-delay: -6s; }
+.lineup p:nth-child(3) { --lift: -.46cqw; animation-duration: 10s; animation-delay: -4s; }
+.lineup p:nth-child(4) { --sway: -.48cqw; animation-duration: 9s; animation-delay: -1s; }
+@keyframes hover-type {
+  from { transform: translate(calc(-1 * var(--sway)), calc(-1 * var(--lift))); }
+  to { transform: translate(var(--sway), var(--lift)); }
+}
+.atmosphere { position:absolute; inset:0 9.3% 14.7% 0; overflow:hidden; pointer-events:none; z-index:1; }
+.drift { position:absolute; left:var(--x); top:var(--y); width:var(--diameter); aspect-ratio:1;
+  animation: drift-across var(--period) ease-in-out var(--phase) infinite alternate; }
+@keyframes drift-across { to { transform:translateX(var(--travel)); } }
+.bubble { display:block; width:100%; height:100%; border-radius:50%; position:relative;
+  opacity:var(--alpha); border:1px solid #c4ffff8a;
+  background:radial-gradient(ellipse at 29% 19%,#fff 0%,#fff9 3%,transparent 10%),
+    radial-gradient(ellipse at 72% 85%,#ffe3faac,transparent 20%),
+    radial-gradient(circle at 46% 42%,transparent 47%,#b5f5ec44 70%,#e9dcff88 88%,#efffffaa 96%);
+  box-shadow:inset .12cqw .11cqw .35cqw #fff8,inset -.18cqw -.12cqw .44cqw #a4bcff85;
+  animation: soft-bounce var(--bounce) cubic-bezier(.43,0,.48,1) var(--phase) infinite alternate; }
+.bubble::before { content:"";position:absolute;left:20%;top:10%;width:30%;height:12%;border-top:1px solid #fff;border-radius:50%;transform:rotate(-24deg); }
+@keyframes soft-bounce { to { transform:translateY(var(--rise)); } }
+.breeze { position:absolute;width:28%;height:6%;left:var(--left);top:var(--top);
+  border-top:1px solid #efffff;border-radius:50%;opacity:0;
+  animation: breeze 17s ease-in-out var(--offset) infinite; }
+.breeze::after { content:"";position:absolute;left:24%;top:13%;width:66%;height:60%;border-radius:50%;border-top:1px solid #e4fff7a0; }
+@keyframes breeze {
+  0%,65%,100% {opacity:0;}
+  0% {transform:translate(-20%,20%) rotate(-9deg) scaleX(.55);}
+  25% {opacity:.34;}
+  65%,100% {transform:translate(90%,-70%) rotate(-4deg) scaleX(1.2);}
+}
+.poster-tools {display:flex;align-items:center;gap:clamp(.6rem,2vw,1.5rem);}
+@media (max-width:520px) {header{gap:.4rem;flex-wrap:wrap}.poster-tools{margin-left:auto}}
