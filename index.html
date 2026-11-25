@@ -5,11 +5,59 @@
 <link rel="stylesheet" href="estilo.css"><script defer src="qr.js"></script><script defer src="config.js"></script><script defer src="invitacion.js"></script>
 <link rel="stylesheet" href="aire.css">
 <link rel="stylesheet" href="sonido.css"><script defer src="sonido.js"></script>
-</head><body>
+<style>
+#modo-noche {
+  display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+  min-height: 44px; padding: 0 .35rem; background: transparent; color: inherit;
+  font: inherit; letter-spacing: inherit;
+}
+#modo-noche svg { width: 16px; height: 16px; }
+#modo-noche[aria-pressed="true"] svg { fill: #bbe8ff; color: #bbe8ff; }
+#modo-noche:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+html[data-tema="noche"] { color-scheme: dark; background: #0c1725; }
+[data-tema="noche"] body { background: #0c1725; color: #e3eff6; }
+[data-tema="noche"] nav { background: #142a36; border-color: #405c66; }
+[data-tema="noche"] .orb { color: #122534; background: radial-gradient(circle at 33% 19%, #fff, #c3ecff 27%, #76a8c0 56%, #304b67 80%); }
+[data-tema="noche"] #arte { filter: saturate(.76) contrast(1.26) brightness(.78); }
+[data-tema="noche"] .poster::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(155deg, #27396b70, #101b493d 52%, #16345b80);
+  mix-blend-mode: multiply;
+}
+[data-tema="noche"] .lineup { color: #f3f7ff; text-shadow: 0 .05em .1em #071322, 0 0 .22em #2b507d; }
+[data-tema="noche"] .lineup small { color: #caf4ed; }
+[data-tema="noche"] form input { background: #142734; border-color: #668592; color: #f1f7fa; }
+[data-tema="noche"] form input::placeholder { color: #abc2ce; }
+[data-tema="noche"] #send, [data-tema="noche"] #descarga { background: #b7e3df; color: #11272d; }
+[data-tema="noche"] dialog:not(#entrada) { background: #162936; color: #e3eff6; }
+[data-tema="noche"] #entrada::backdrop { background: radial-gradient(ellipse at center, #244768af, #172a454d 55%, #0a182d82); }
+[data-tema="noche"] #entrar { color: #f2f8ff; }
+</style><script>
+(() => {
+  const key = 'diama-panic-tema';
+  const root = document.documentElement;
+  const chromeColor = document.querySelector('meta[name="theme-color"]');
+  function setNight(enabled) {
+    root.dataset.tema = enabled ? 'noche' : 'dia';
+    chromeColor.content = enabled ? '#0c1725' : '#e5edda';
+  }
+  try { setNight(localStorage.getItem(key) === 'noche'); } catch { setNight(false); }
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('modo-noche');
+    button.setAttribute('aria-pressed', String(root.dataset.tema === 'noche'));
+    button.addEventListener('click', () => {
+      const enabled = root.dataset.tema !== 'noche';
+      setNight(enabled);
+      button.setAttribute('aria-pressed', String(enabled));
+      try { localStorage.setItem(key, root.dataset.tema); } catch {}
+    });
+  });
+})();
+</script></head><body>
 <header><time datetime="2026-12-04">Viernes · 4 diciembre 2026</time><div class="poster-tools"><div class="audio-control">
 <button type="button" id="altavoz" aria-label="Activar música"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 9h4l5-4v14l-5-4H3z"/><path class="onda" d="M15 9q3 3 0 6m3-9q6 6 0 12"/><path class="silencio" d="m16 9 5 6m0-6-5 6"/></svg></button>
 <input aria-label="Volumen de la música" id="volumen" type="range" min="0" max="100" value="30">
-</div><a href="#registro">Registro ↓</a></div></header>
+</div><button id="modo-noche" type="button" aria-pressed="false" aria-label="Modo nocturno"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/></svg>Noche</button><a href="#registro">Registro ↓</a></div></header>
 <p id="fallo-audio" role="status" hidden>Pulsa el altavoz para volver a iniciar la música.</p>
 <main>
 <section class="poster" aria-label="DIAMA × PANIC, lineup">
