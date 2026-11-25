@@ -35,7 +35,7 @@ async function showTicket(ticket, demo = false) {
   ctx.font = '32px Arial';
   ctx.fillText('Viernes · 4 diciembre 2026', 52, 900);
   ctx.font = '28px Arial';
-  ctx.fillText('Con registro: $100 MXN · Pago en puerta', 52, 945, 780);
+  ctx.fillText('Con registro: $80 MXN · Pago en puerta', 52, 945, 780);
   ctx.font = '23px monospace';
   ctx.fillText(ticket.token, 52, 988);
   const qr = new TicketQR(4, 0); // Versión 4, corrección M.
